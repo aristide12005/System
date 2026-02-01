@@ -10,16 +10,18 @@ export function AttendanceWidget() {
                 </div>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-2.5">
                 {/* Last Class */}
                 <div>
                     <div className="flex justify-between items-center text-[10px] sm:text-xs mb-1">
-                        <span className="text-gray-400">Last class date : Saturday, Jan 31</span>
+                        <span className="text-gray-400">Last class : Sat, Jan 31</span>
+                        <div className="flex gap-2 text-[9px] font-medium">
+                            <span className="text-emerald-600">75%</span>
+                            <span className="text-red-500">25%</span>
+                        </div>
                     </div>
-                    <div className="flex items-center gap-1 h-1.5 rounded-full overflow-hidden">
-                        {/* Present Stick */}
+                    <div className="flex items-center gap-0.5 h-1.5 rounded-full overflow-hidden">
                         <div className="h-full bg-emerald-500 w-[75%]"></div>
-                        {/* Absent Stick */}
                         <div className="h-full bg-red-400 w-[25%]"></div>
                     </div>
                 </div>
@@ -27,17 +29,19 @@ export function AttendanceWidget() {
                 {/* Today */}
                 <div>
                     <div className="flex justify-between items-center text-[10px] sm:text-xs mb-1">
-                        <span className="text-gray-400">Today date : Sunday 1, February</span>
+                        <span className="text-gray-400">Today : Sun, Feb 1</span>
+                        <div className="flex gap-2 text-[9px] font-medium">
+                            <span className="text-emerald-600">85%</span>
+                            <span className="text-red-500">15%</span>
+                        </div>
                     </div>
-                    <div className="flex items-center gap-1 h-1.5 rounded-full overflow-hidden">
-                        {/* Present Stick */}
+                    <div className="flex items-center gap-0.5 h-1.5 rounded-full overflow-hidden">
                         <div className="h-full bg-emerald-500 w-[85%]"></div>
-                        {/* Absent Stick */}
                         <div className="h-full bg-red-400 w-[15%]"></div>
                     </div>
                 </div>
 
-                <div className="flex justify-start gap-4 text-[9px] text-gray-400">
+                <div className="flex justify-start gap-4 text-[9px] text-gray-400 pt-0.5">
                     <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div> Present</span>
                     <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-red-400"></div> Absent</span>
                 </div>
