@@ -174,9 +174,15 @@ export default function TraineesPage() {
     const [expandedRow, setExpandedRow] = useState<string | null>("5");
     const [selectedRows, setSelectedRows] = useState<string[]>(["3", "5"]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [activeTab, setActiveTab] = useState<"overview" | "performance" | "messages" | "grades">("overview");
 
     const toggleRow = (id: string) => {
-        setExpandedRow(expandedRow === id ? null : id);
+        if (expandedRow === id) {
+            setExpandedRow(null);
+        } else {
+            setExpandedRow(id);
+            setActiveTab("overview");
+        }
     };
 
     const toggleSelection = (id: string) => {
@@ -205,11 +211,11 @@ export default function TraineesPage() {
             {/* Header */}
             <div className="flex justify-between items-center mb-6">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-800">Team List</h1>
+                    <h1 className="text-2xl font-bold text-gray-800">ERNAM</h1>
                     <div className="text-sm text-gray-500 mt-1">
-                        <span className="text-blue-500">Admin Dashboard</span>
+                        <span className="text-blue-500">Financial Mathematics</span>
                         <span className="mx-2">&gt;</span>
-                        <span>Team List</span>
+                        <span>Trainees List</span>
                     </div>
                 </div>
             </div>
@@ -291,8 +297,8 @@ export default function TraineesPage() {
                                     </td>
                                     <td className="p-4">
                                         <span className={`px-3 py-1 rounded-full text-xs font-medium ${trainee.status === 'Active'
-                                                ? 'bg-emerald-100 text-emerald-600'
-                                                : 'bg-gray-100 text-gray-500'
+                                            ? 'bg-emerald-100 text-emerald-600'
+                                            : 'bg-gray-100 text-gray-500'
                                             }`}>
                                             {trainee.status}
                                         </span>
@@ -313,64 +319,138 @@ export default function TraineesPage() {
                                 {expandedRow === trainee.id && (
                                     <tr className="bg-white border-b-2 border-blue-500">
                                         <td colSpan={6} className="p-0">
-                                            <div className="p-6 grid grid-cols-12 gap-6 text-sm bg-white">
-                                                {/* Chart Section */}
-                                                <div className="col-span-4 border rounded-xl p-4 shadow-sm">
-                                                    <h4 className="font-semibold text-gray-900 mb-4">Performance Chart</h4>
-                                                    <div className="h-40 w-full">
-                                                        <ResponsiveContainer width="100%" height="100%">
-                                                            <AreaChart data={trainee.performanceData}>
-                                                                <defs>
-                                                                    <linearGradient id="colorPerf" x1="0" y1="0" x2="0" y2="1">
-                                                                        <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.8} />
-                                                                        <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
-                                                                    </linearGradient>
-                                                                </defs>
-                                                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
-                                                                <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
-                                                                <YAxis hide />
-                                                                <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }} />
-                                                                <Area type="monotone" dataKey="performance" stroke="#3B82F6" fillOpacity={1} fill="url(#colorPerf)" />
-                                                            </AreaChart>
-                                                        </ResponsiveContainer>
-                                                    </div>
+                                            <div className="flex flex-col">
+                                                {/* Tabs */}
+                                                <div className="flex border-b border-gray-100 px-6 pt-2">
+                                                    <button
+                                                        onClick={() => setActiveTab("overview")}
+                                                        className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${activeTab === 'overview' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+                                                    >
+                                                        Overview
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setActiveTab("performance")}
+                                                        className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${activeTab === 'performance' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+                                                    >
+                                                        Performance
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setActiveTab("messages")}
+                                                        className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${activeTab === 'messages' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+                                                    >
+                                                        Messages
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setActiveTab("grades")}
+                                                        className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${activeTab === 'grades' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+                                                    >
+                                                        Grades
+                                                    </button>
                                                 </div>
 
-                                                {/* Send Message Section */}
-                                                <div className="col-span-4 border rounded-xl p-4 shadow-sm flex flex-col">
-                                                    <h4 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                                                        <Mail className="w-4 h-4 text-blue-500" /> Send Message
-                                                    </h4>
-                                                    <textarea
-                                                        className="w-full h-full p-3 bg-gray-50 rounded-lg border-none focus:ring-1 focus:ring-blue-500 outline-none resize-none text-sm text-gray-600 mb-3"
-                                                        placeholder={`Write a message to ${trainee.name}...`}
-                                                    ></textarea>
-                                                    <div className="flex justify-end">
-                                                        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-blue-700 transition-colors">
-                                                            <Send className="w-3 h-3" /> Send
-                                                        </button>
-                                                    </div>
-                                                </div>
-
-                                                {/* Grades Section */}
-                                                <div className="col-span-4 border rounded-xl p-4 shadow-sm">
-                                                    <h4 className="font-semibold text-gray-900 mb-4">Recent Grades</h4>
-                                                    <div className="space-y-3">
-                                                        {trainee.grades?.map((grade, index) => (
-                                                            <div key={index} className="flex justify-between items-center p-2 hover:bg-gray-50 rounded-lg transition-colors">
-                                                                <span className="text-gray-600 font-medium">{grade.subject}</span>
-                                                                <div className="flex items-center gap-3">
-                                                                    <span className="text-gray-400 text-xs">{grade.score}%</span>
-                                                                    <span className={`px-2 py-0.5 rounded text-xs font-bold ${grade.grade.startsWith('A') ? 'bg-green-100 text-green-600' :
-                                                                            grade.grade.startsWith('B') ? 'bg-blue-100 text-blue-600' :
-                                                                                'bg-yellow-100 text-yellow-600'
-                                                                        }`}>
-                                                                        {grade.grade}
-                                                                    </span>
+                                                {/* Content Area */}
+                                                <div className="p-6 bg-white min-h-[200px]">
+                                                    {activeTab === 'overview' && (
+                                                        <div className="grid grid-cols-4 gap-8 text-xs text-gray-500">
+                                                            <div>
+                                                                <p className="font-semibold text-gray-900 mb-1 flex items-center gap-2">
+                                                                    <MapPin className="w-3 h-3 text-gray-400" /> Office Location
+                                                                </p>
+                                                                <p>{trainee.officeLocation || "N/A"}</p>
+                                                                <p className="font-semibold text-gray-900 mt-4 mb-1">Position</p>
+                                                                <p>{trainee.position || "N/A"}</p>
+                                                            </div>
+                                                            <div>
+                                                                <p className="font-semibold text-gray-900 mb-1 flex items-center gap-2">
+                                                                    <User className="w-3 h-3 text-gray-400" /> Team Mates
+                                                                </p>
+                                                                <div className="flex flex-col gap-1">
+                                                                    {trainee.teamMates?.map(mate => (
+                                                                        <div key={mate} className="flex items-center gap-2">
+                                                                            <User className="w-3 h-3 text-gray-300" />
+                                                                            <span>{mate}</span>
+                                                                        </div>
+                                                                    )) || "N/A"}
                                                                 </div>
                                                             </div>
-                                                        ))}
-                                                    </div>
+                                                            <div>
+                                                                <p className="font-semibold text-gray-900 mb-1 flex items-center gap-2">
+                                                                    <Calendar className="w-3 h-3 text-gray-400" /> Birthday
+                                                                </p>
+                                                                <p>{trainee.birthday || "N/A"}</p>
+                                                                <p className="font-semibold text-gray-900 mt-4 mb-1">HR Year</p>
+                                                                <p>{trainee.hrYear || "N/A"}</p>
+                                                            </div>
+                                                            <div>
+                                                                <p className="font-semibold text-gray-900 mb-1">Address</p>
+                                                                <p>{trainee.address || "N/A"}</p>
+                                                                <p className="font-semibold text-gray-900 mt-4 mb-1">Department</p>
+                                                                <p>{trainee.department || "N/A"}</p>
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    {activeTab === 'performance' && (
+                                                        <div className="border rounded-xl p-4 shadow-sm w-full max-w-lg mx-auto">
+                                                            <h4 className="font-semibold text-gray-900 mb-4">Performance Chart</h4>
+                                                            <div className="h-64 w-full">
+                                                                <ResponsiveContainer width="100%" height="100%">
+                                                                    <AreaChart data={trainee.performanceData}>
+                                                                        <defs>
+                                                                            <linearGradient id="colorPerf" x1="0" y1="0" x2="0" y2="1">
+                                                                                <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.8} />
+                                                                                <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
+                                                                            </linearGradient>
+                                                                        </defs>
+                                                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
+                                                                        <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
+                                                                        <YAxis hide />
+                                                                        <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }} />
+                                                                        <Area type="monotone" dataKey="performance" stroke="#3B82F6" fillOpacity={1} fill="url(#colorPerf)" />
+                                                                    </AreaChart>
+                                                                </ResponsiveContainer>
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    {activeTab === 'messages' && (
+                                                        <div className="border rounded-xl p-4 shadow-sm flex flex-col w-full max-w-lg mx-auto">
+                                                            <h4 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                                                                <Mail className="w-4 h-4 text-blue-500" /> Send Message
+                                                            </h4>
+                                                            <textarea
+                                                                className="w-full h-32 p-3 bg-gray-50 rounded-lg border-none focus:ring-1 focus:ring-blue-500 outline-none resize-none text-sm text-gray-600 mb-3"
+                                                                placeholder={`Write a message to ${trainee.name}...`}
+                                                            ></textarea>
+                                                            <div className="flex justify-end">
+                                                                <button className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-blue-700 transition-colors">
+                                                                    <Send className="w-3 h-3" /> Send
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    {activeTab === 'grades' && (
+                                                        <div className="border rounded-xl p-4 shadow-sm w-full max-w-lg mx-auto">
+                                                            <h4 className="font-semibold text-gray-900 mb-4">Recent Grades</h4>
+                                                            <div className="space-y-3">
+                                                                {trainee.grades?.map((grade, index) => (
+                                                                    <div key={index} className="flex justify-between items-center p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                                                                        <span className="text-gray-600 font-medium">{grade.subject}</span>
+                                                                        <div className="flex items-center gap-3">
+                                                                            <span className="text-gray-400 text-xs">{grade.score}%</span>
+                                                                            <span className={`px-2 py-0.5 rounded text-xs font-bold ${grade.grade.startsWith('A') ? 'bg-green-100 text-green-600' :
+                                                                                grade.grade.startsWith('B') ? 'bg-blue-100 text-blue-600' :
+                                                                                    'bg-yellow-100 text-yellow-600'
+                                                                                }`}>
+                                                                                {grade.grade}
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         </td>
