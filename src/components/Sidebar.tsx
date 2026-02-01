@@ -6,8 +6,7 @@ import {
   Users,
   Settings,
   Shield,
-  Link as LinkIcon,
-  Sparkles
+  Link as LinkIcon
 } from "lucide-react";
 import clsx from "clsx";
 
@@ -18,11 +17,6 @@ const MENU_ITEMS = [
   { label: "Attendance", icon: CreditCard, href: "/attendance" },
   { label: "Grades", icon: Shield, href: "/grades" },
   { label: "Documents", icon: LinkIcon, href: "/documents" },
-];
-
-const SETTINGS_ITEMS = [
-  { label: "Connected Service", href: "/settings/connected" },
-  { label: "Password & Security", href: "/settings/security" },
 ];
 
 export function Sidebar() {
@@ -41,7 +35,7 @@ export function Sidebar() {
       </div>
 
       {/* Menu */}
-      <nav className="flex-1 px-4 space-y-1 mt-4">
+      <nav className="flex-1 px-4 space-y-1 mt-4 flex flex-col">
         {MENU_ITEMS.map((item) => (
           <Link
             key={item.label}
@@ -58,50 +52,18 @@ export function Sidebar() {
           </Link>
         ))}
 
-        {/* Settings */}
-        <div className="pt-4">
-          <div className="flex items-center gap-3 px-4 py-2 text-text-secondary text-sm font-medium cursor-pointer">
+        {/* Separator and Settings at the bottom */}
+        <div className="mt-auto pt-4 pb-6">
+          <div className="h-px bg-gray-100 mx-4 mb-4"></div>
+          <Link
+            href="/settings"
+            className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-gray-50 hover:text-text-primary transition-colors"
+          >
             <Settings className="w-5 h-5" />
             Settings
-          </div>
-          <div className="ml-12 mt-1 space-y-1 border-l-2 border-gray-100 pl-4">
-            {SETTINGS_ITEMS.map(item => (
-              <Link
-                key={item.label}
-                href={item.href}
-                className="block py-1 text-sm text-text-secondary hover:text-text-primary transition-colors"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        {/* Team Section Placeholder based on image dots */}
-        <div className="pt-4 px-4">
-          <div className="flex items-center gap-3 py-2 text-text-secondary text-sm font-medium">
-            <Users className="w-5 h-5" />
-            Team
-          </div>
+          </Link>
         </div>
       </nav>
-
-      {/* Pro Access Card */}
-      <div className="p-4 mt-auto">
-        <div className="bg-blue-600 rounded-2xl p-4 text-white text-center relative overflow-hidden">
-          <div className="relative z-10">
-            <h3 className="font-semibold text-lg mb-1">Become Pro Access</h3>
-            <p className="text-blue-100 text-xs mb-3">Try your experience for using more features</p>
-            <button className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white text-xs font-semibold py-2 px-4 rounded-lg w-full flex items-center justify-center gap-2 transition-colors">
-              <Sparkles className="w-4 h-4" />
-              Upgrade Pro
-            </button>
-          </div>
-          {/* Decorative circles */}
-          <div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-500 rounded-full opacity-50 blur-2xl"></div>
-          <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-blue-400 rounded-full opacity-50 blur-2xl"></div>
-        </div>
-      </div>
     </aside>
   );
 }
