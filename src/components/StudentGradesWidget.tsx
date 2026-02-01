@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend, AreaChart, Area } from 'recharts';
 
 const data = [
     { grade: 'A', students: 4000 },
@@ -15,24 +15,27 @@ const data = [
 const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899'];
 
 export function StudentGradesWidget() {
-    const [viewMode, setViewMode] = useState<'bar' | 'pie'>('bar');
+    const [viewMode, setViewMode] = useState<'bar' | 'pie' | 'area'>('bar');
+
+    const toggleView = () => {
+        if (viewMode === 'bar') setViewMode('pie');
+        else if (viewMode === 'pie') setViewMode('area');
+        else setViewMode('bar');
+    };
 
     return (
         <div className="bg-white p-4 rounded-xl shadow-sm h-64 w-full">
             <div className="flex justify-between items-center mb-4">
                 <h3 className="font-bold text-text-primary text-sm">Passing Level</h3>
                 <button
-                    onClick={() => setViewMode(viewMode === 'bar' ? 'pie' : 'bar')}
+                    onClick={toggleView}
                     className="p-1 bg-gray-50 rounded text-gray-400 hover:bg-gray-100 hover:text-blue-500 transition-colors"
-                    title="Toggle View"
+                    title="Toggle View (Bar -> Pie -> Curve)"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        {viewMode === 'bar' ? (
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-                        ) : (
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                        )}
-                        {viewMode === 'bar' && <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />}
+                        {viewMode === 'bar' && <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />}
+                        {viewMode === 'pie' && <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />}
+                        {viewMode === 'area' && <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />}
                     </svg>
                 </button>
             </div>
@@ -41,34 +44,16 @@ export function StudentGradesWidget() {
                     {viewMode === 'bar' ? (
                         <BarChart
                             data={data}
-                            margin={{
-                                top: 5,
-                                right: 10,
-                                left: -20,
-                                bottom: 0,
-                            }}
+                            margin={{ top: 5, right: 10, left: -20, bottom: 0 }}
                             barSize={20}
                         >
                             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
-                            <XAxis
-                                dataKey="grade"
-                                axisLine={false}
-                                tickLine={false}
-                                tick={{ fill: '#9CA3AF', fontSize: 10 }}
-                                dy={10}
-                            />
-                            <YAxis
-                                axisLine={false}
-                                tickLine={false}
-                                tick={{ fill: '#9CA3AF', fontSize: 10 }}
-                            />
-                            <Tooltip
-                                cursor={{ fill: '#F3F4F6' }}
-                                contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
-                            />
+                            <XAxis dataKey="grade" axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 10 }} dy={10} />
+                            <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 10 }} />
+                            <Tooltip cursor={{ fill: '#F3F4F6' }} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }} />
                             <Bar dataKey="students" fill="#3B82F6" radius={[4, 4, 0, 0]} />
                         </BarChart>
-                    ) : (
+                    ) : viewMode === 'pie' ? (
                         <PieChart>
                             <Pie
                                 data={data}
@@ -86,6 +71,23 @@ export function StudentGradesWidget() {
                             <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }} />
                             <Legend verticalAlign="middle" align="right" layout="vertical" iconSize={8} wrapperStyle={{ fontSize: '10px' }} />
                         </PieChart>
+                    ) : (
+                        <AreaChart
+                            data={data}
+                            margin={{ top: 5, right: 10, left: -20, bottom: 0 }}
+                        >
+                            <defs>
+                                <linearGradient id="colorStudents" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.8} />
+                                    <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
+                                </linearGradient>
+                            </defs>
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
+                            <XAxis dataKey="grade" axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 10 }} dy={10} />
+                            <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9CA3AF', fontSize: 10 }} />
+                            <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }} />
+                            <Area type="monotone" dataKey="students" stroke="#3B82F6" fillOpacity={1} fill="url(#colorStudents)" />
+                        </AreaChart>
                     )}
                 </ResponsiveContainer>
             </div>
