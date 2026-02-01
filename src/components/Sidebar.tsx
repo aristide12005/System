@@ -12,8 +12,8 @@ import {
 import clsx from "clsx";
 
 const MENU_ITEMS = [
-  { label: "Home", icon: LayoutGrid, href: "/" },
-  { label: "Trainees", icon: Users, href: "/trainees", active: true },
+  { label: "Home", icon: LayoutGrid, href: "/", active: true },
+  { label: "Trainees", icon: Users, href: "/trainees" },
   { label: "Notes", icon: Megaphone, href: "/notes" },
   { label: "Attendance", icon: CreditCard, href: "/attendance" },
   { label: "Grades", icon: Shield, href: "/grades" },
