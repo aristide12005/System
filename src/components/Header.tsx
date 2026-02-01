@@ -2,7 +2,7 @@ import { Search, Bell } from "lucide-react";
 
 export function Header() {
     return (
-        <header className="h-16 bg-transparent flex items-center justify-between px-8 py-4 sticky top-0 z-10">
+        <header className="h-16 bg-transparent flex items-center justify-between px-8 py-4 z-10">
             {/* Search */}
             <div className="flex-1 max-w-xl">
                 <div className="relative group">
@@ -28,7 +28,6 @@ export function Header() {
                     </div>
                     <div className="text-left">
                         <p className="text-sm font-semibold text-text-primary leading-none">ERNAM</p>
-                        <p className="text-[10px] text-text-secondary leading-none mt-1">Brand</p>
                     </div>
                 </div>
             </div>
