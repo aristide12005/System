@@ -1,8 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Filter, Plus, Trash2, Edit2, ChevronLeft, ChevronRight, MoreHorizontal, Calendar, MapPin, User, Mail, Phone } from "lucide-react";
+import { Search, Filter, Plus, Trash2, Edit2, ChevronLeft, ChevronRight, MoreHorizontal, Calendar, MapPin, User, Mail, Phone, Send } from "lucide-react";
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import React from 'react';
+
+type Grade = {
+    subject: string;
+    score: number;
+    grade: string;
+};
+
+type ChartData = {
+    month: string;
+    performance: number;
+};
 
 type Trainee = {
     id: string;
@@ -12,14 +24,33 @@ type Trainee = {
     status: "Active" | "Inactive";
     avatar: string;
     // Expanded details
-    position?: string; // Kept for details view if needed, or remove? User said "on columns keep...", maybe data can stay for expansion?
+    position?: string;
     department?: string;
     officeLocation?: string;
     teamMates?: string[];
     birthday?: string;
     hrYear?: string;
     address?: string;
+    // New Expanded Data
+    grades?: Grade[];
+    performanceData?: ChartData[];
 };
+
+const MOCK_GRADES: Grade[] = [
+    { subject: "React.js", score: 85, grade: "A" },
+    { subject: "UI Design", score: 92, grade: "A+" },
+    { subject: "Backend", score: 78, grade: "B+" },
+    { subject: "Database", score: 88, grade: "A" },
+];
+
+const MOCK_PERFORMANCE: ChartData[] = [
+    { month: 'Jan', performance: 65 },
+    { month: 'Feb', performance: 75 },
+    { month: 'Mar', performance: 85 },
+    { month: 'Apr', performance: 70 },
+    { month: 'May', performance: 90 },
+    { month: 'Jun', performance: 95 },
+];
 
 const TRAINEES_DATA: Trainee[] = [
     {
@@ -31,6 +62,8 @@ const TRAINEES_DATA: Trainee[] = [
         phone: "(252) 555-0126",
         status: "Active",
         avatar: "https://i.pravatar.cc/150?u=1",
+        grades: MOCK_GRADES,
+        performanceData: MOCK_PERFORMANCE,
     },
     {
         id: "2",
@@ -41,6 +74,8 @@ const TRAINEES_DATA: Trainee[] = [
         phone: "(252) 555-0126",
         status: "Inactive",
         avatar: "https://i.pravatar.cc/150?u=2",
+        grades: MOCK_GRADES,
+        performanceData: MOCK_PERFORMANCE,
     },
     {
         id: "3",
@@ -51,6 +86,8 @@ const TRAINEES_DATA: Trainee[] = [
         phone: "(252) 555-0126",
         status: "Active",
         avatar: "https://i.pravatar.cc/150?u=3",
+        grades: MOCK_GRADES,
+        performanceData: MOCK_PERFORMANCE,
     },
     {
         id: "4",
@@ -61,6 +98,8 @@ const TRAINEES_DATA: Trainee[] = [
         phone: "(252) 555-0126",
         status: "Active",
         avatar: "https://i.pravatar.cc/150?u=4",
+        grades: MOCK_GRADES,
+        performanceData: MOCK_PERFORMANCE,
     },
     {
         id: "5",
@@ -76,6 +115,8 @@ const TRAINEES_DATA: Trainee[] = [
         birthday: "12/2/1998",
         hrYear: "4 Years",
         address: "4140 Parker Rd. Allentown, New Mexico 31134",
+        grades: MOCK_GRADES,
+        performanceData: MOCK_PERFORMANCE,
     },
     {
         id: "6",
@@ -86,6 +127,8 @@ const TRAINEES_DATA: Trainee[] = [
         phone: "(252) 555-0126",
         status: "Active",
         avatar: "https://i.pravatar.cc/150?u=6",
+        grades: MOCK_GRADES,
+        performanceData: MOCK_PERFORMANCE,
     },
     {
         id: "7",
@@ -96,6 +139,8 @@ const TRAINEES_DATA: Trainee[] = [
         phone: "(252) 555-0126",
         status: "Inactive",
         avatar: "https://i.pravatar.cc/150?u=7",
+        grades: MOCK_GRADES,
+        performanceData: MOCK_PERFORMANCE,
     },
     {
         id: "8",
@@ -106,6 +151,8 @@ const TRAINEES_DATA: Trainee[] = [
         phone: "(252) 555-0126",
         status: "Active",
         avatar: "https://i.pravatar.cc/150?u=8",
+        grades: MOCK_GRADES,
+        performanceData: MOCK_PERFORMANCE,
     },
     {
         id: "9",
@@ -116,12 +163,17 @@ const TRAINEES_DATA: Trainee[] = [
         phone: "(252) 555-0126",
         status: "Inactive",
         avatar: "https://i.pravatar.cc/150?u=9",
+        grades: MOCK_GRADES,
+        performanceData: MOCK_PERFORMANCE,
     },
 ];
 
+const ITEMS_PER_PAGE = 5;
+
 export default function TraineesPage() {
-    const [expandedRow, setExpandedRow] = useState<string | null>("5"); // Default open for demo
-    const [selectedRows, setSelectedRows] = useState<string[]>(["3", "5"]); // Default selected for demo
+    const [expandedRow, setExpandedRow] = useState<string | null>("5");
+    const [selectedRows, setSelectedRows] = useState<string[]>(["3", "5"]);
+    const [currentPage, setCurrentPage] = useState(1);
 
     const toggleRow = (id: string) => {
         setExpandedRow(expandedRow === id ? null : id);
@@ -133,6 +185,19 @@ export default function TraineesPage() {
         } else {
             setSelectedRows([...selectedRows, id]);
         }
+    };
+
+    // Pagination Logic
+    const totalPages = Math.ceil(TRAINEES_DATA.length / ITEMS_PER_PAGE);
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const currentTrainees = TRAINEES_DATA.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+    const goToNextPage = () => {
+        if (currentPage < totalPages) setCurrentPage(prev => prev + 1);
+    };
+
+    const goToPrevPage = () => {
+        if (currentPage > 1) setCurrentPage(prev => prev - 1);
     };
 
     return (
@@ -196,7 +261,7 @@ export default function TraineesPage() {
                         </tr>
                     </thead>
                     <tbody className="text-sm">
-                        {TRAINEES_DATA.map((trainee) => (
+                        {currentTrainees.map((trainee) => (
                             <React.Fragment key={trainee.id}>
                                 <tr
                                     className={`border-b border-gray-50 hover:bg-gray-50/50 transition-colors ${expandedRow === trainee.id ? 'bg-blue-50/10 border-blue-100' : ''} ${selectedRows.includes(trainee.id) ? 'bg-blue-50/30' : ''}`}
@@ -248,42 +313,64 @@ export default function TraineesPage() {
                                 {expandedRow === trainee.id && (
                                     <tr className="bg-white border-b-2 border-blue-500">
                                         <td colSpan={6} className="p-0">
-                                            <div className="p-6 grid grid-cols-4 gap-8 text-xs text-gray-500 bg-white">
-                                                <div>
-                                                    <p className="font-semibold text-gray-900 mb-1 flex items-center gap-2">
-                                                        <MapPin className="w-3 h-3 text-gray-400" /> Office Location
-                                                    </p>
-                                                    <p>{trainee.officeLocation || "N/A"}</p>
-                                                    <p className="font-semibold text-gray-900 mt-4 mb-1">Position</p>
-                                                    <p>{trainee.position || "N/A"}</p>
-                                                </div>
-                                                <div>
-                                                    <p className="font-semibold text-gray-900 mb-1 flex items-center gap-2">
-                                                        <User className="w-3 h-3 text-gray-400" /> Team Mates
-                                                    </p>
-                                                    <div className="flex flex-col gap-1">
-                                                        {trainee.teamMates?.map(mate => (
-                                                            <div key={mate} className="flex items-center gap-2">
-                                                                <User className="w-3 h-3 text-gray-300" />
-                                                                <span>{mate}</span>
-                                                            </div>
-                                                        )) || "N/A"}
+                                            <div className="p-6 grid grid-cols-12 gap-6 text-sm bg-white">
+                                                {/* Chart Section */}
+                                                <div className="col-span-4 border rounded-xl p-4 shadow-sm">
+                                                    <h4 className="font-semibold text-gray-900 mb-4">Performance Chart</h4>
+                                                    <div className="h-40 w-full">
+                                                        <ResponsiveContainer width="100%" height="100%">
+                                                            <AreaChart data={trainee.performanceData}>
+                                                                <defs>
+                                                                    <linearGradient id="colorPerf" x1="0" y1="0" x2="0" y2="1">
+                                                                        <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.8} />
+                                                                        <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
+                                                                    </linearGradient>
+                                                                </defs>
+                                                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
+                                                                <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 10 }} />
+                                                                <YAxis hide />
+                                                                <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }} />
+                                                                <Area type="monotone" dataKey="performance" stroke="#3B82F6" fillOpacity={1} fill="url(#colorPerf)" />
+                                                            </AreaChart>
+                                                        </ResponsiveContainer>
                                                     </div>
                                                 </div>
-                                                <div>
-                                                    <p className="font-semibold text-gray-900 mb-1 flex items-center gap-2">
-                                                        <Calendar className="w-3 h-3 text-gray-400" /> Birthday
-                                                    </p>
-                                                    <p>{trainee.birthday || "N/A"}</p>
 
-                                                    <p className="font-semibold text-gray-900 mt-4 mb-1">HR Year</p>
-                                                    <p>{trainee.hrYear || "N/A"}</p>
+                                                {/* Send Message Section */}
+                                                <div className="col-span-4 border rounded-xl p-4 shadow-sm flex flex-col">
+                                                    <h4 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                                                        <Mail className="w-4 h-4 text-blue-500" /> Send Message
+                                                    </h4>
+                                                    <textarea
+                                                        className="w-full h-full p-3 bg-gray-50 rounded-lg border-none focus:ring-1 focus:ring-blue-500 outline-none resize-none text-sm text-gray-600 mb-3"
+                                                        placeholder={`Write a message to ${trainee.name}...`}
+                                                    ></textarea>
+                                                    <div className="flex justify-end">
+                                                        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-blue-700 transition-colors">
+                                                            <Send className="w-3 h-3" /> Send
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <p className="font-semibold text-gray-900 mb-1">Address</p>
-                                                    <p>{trainee.address || "N/A"}</p>
-                                                    <p className="font-semibold text-gray-900 mt-4 mb-1">Department</p>
-                                                    <p>{trainee.department || "N/A"}</p>
+
+                                                {/* Grades Section */}
+                                                <div className="col-span-4 border rounded-xl p-4 shadow-sm">
+                                                    <h4 className="font-semibold text-gray-900 mb-4">Recent Grades</h4>
+                                                    <div className="space-y-3">
+                                                        {trainee.grades?.map((grade, index) => (
+                                                            <div key={index} className="flex justify-between items-center p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                                                                <span className="text-gray-600 font-medium">{grade.subject}</span>
+                                                                <div className="flex items-center gap-3">
+                                                                    <span className="text-gray-400 text-xs">{grade.score}%</span>
+                                                                    <span className={`px-2 py-0.5 rounded text-xs font-bold ${grade.grade.startsWith('A') ? 'bg-green-100 text-green-600' :
+                                                                            grade.grade.startsWith('B') ? 'bg-blue-100 text-blue-600' :
+                                                                                'bg-yellow-100 text-yellow-600'
+                                                                        }`}>
+                                                                        {grade.grade}
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </td>
@@ -296,12 +383,20 @@ export default function TraineesPage() {
 
                 {/* Pagination */}
                 <div className="p-4 border-t border-gray-100 flex justify-end items-center gap-4 text-xs text-gray-500">
-                    <span>1 - 9 of 48</span>
+                    <span>{startIndex + 1} - {Math.min(startIndex + ITEMS_PER_PAGE, TRAINEES_DATA.length)} of {TRAINEES_DATA.length}</span>
                     <div className="flex gap-1">
-                        <button className="p-1 hover:bg-gray-100 rounded text-gray-400 disabled:opacity-50">
+                        <button
+                            onClick={goToPrevPage}
+                            disabled={currentPage === 1}
+                            className="p-1 hover:bg-gray-100 rounded text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
                             <ChevronLeft className="w-4 h-4" />
                         </button>
-                        <button className="p-1 hover:bg-gray-100 rounded text-gray-400">
+                        <button
+                            onClick={goToNextPage}
+                            disabled={currentPage === totalPages}
+                            className="p-1 hover:bg-gray-100 rounded text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
                             <ChevronRight className="w-4 h-4" />
                         </button>
                     </div>
