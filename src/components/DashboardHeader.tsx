@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 export function DashboardHeader() {
     const [currentDate, setCurrentDate] = useState<string>("");
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
     useEffect(() => {
         // Initial formatted date
@@ -49,9 +50,20 @@ export function DashboardHeader() {
                     <span className="text-sm text-text-secondary">Status</span>
                     <span className="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-xs font-medium">Active</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-text-secondary">
-                    <span>Current Time</span>
-                    <span className="font-semibold text-text-primary">{currentDate || "Loading..."}</span>
+
+                {/* Date/Time with Calendar Dropdown */}
+                <div className="relative">
+                    <div
+                        className="flex items-center gap-2 text-sm text-text-secondary cursor-pointer"
+                        onClick={() => setIsCalendarOpen(!isCalendarOpen)}
+                    >
+                        <span>Current Time</span>
+                        <span className="font-semibold text-text-primary hover:text-blue-600 transition-colors select-none">
+                            {currentDate || "Loading..."}
+                        </span>
+                    </div>
+
+                    {isCalendarOpen && <SimpleCalendar />}
                 </div>
 
                 <div className="relative">
@@ -78,6 +90,53 @@ export function DashboardHeader() {
                         </div>
                     )}
                 </div>
+            </div>
+        </div>
+    );
+}
+
+function SimpleCalendar() {
+    const today = new Date();
+    const currentMonth = today.toLocaleString('default', { month: 'long' });
+    const currentYear = today.getFullYear();
+    const daysInMonth = new Date(currentYear, today.getMonth() + 1, 0).getDate();
+    const firstDayOfMonth = new Date(currentYear, today.getMonth(), 1).getDay();
+
+    const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+    const blanks = Array.from({ length: firstDayOfMonth }, (_, i) => i);
+
+    return (
+        <div className="absolute top-full right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-100 p-4 z-50 w-64">
+            <div className="flex items-center justify-between mb-4">
+                <span className="font-semibold text-text-primary">{currentMonth} {currentYear}</span>
+                <div className="flex gap-1">
+                    <button className="p-1 hover:bg-gray-100 rounded text-gray-400">
+                        <ChevronLeft className="w-4 h-4" />
+                    </button>
+                    <button className="p-1 hover:bg-gray-100 rounded text-gray-400">
+                        <ChevronLeft className="w-4 h-4 rotate-180" />
+                    </button>
+                </div>
+            </div>
+            <div className="grid grid-cols-7 gap-1 text-center text-xs mb-2 text-gray-400 font-medium">
+                {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(d => <div key={d}>{d}</div>)}
+            </div>
+            <div className="grid grid-cols-7 gap-1 text-center text-sm">
+                {blanks.map(b => <div key={`blank-${b}`}></div>)}
+                {days.map(d => {
+                    const isToday = d === today.getDate();
+                    return (
+                        <div
+                            key={d}
+                            className={`
+                                w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-100
+                                ${isToday ? 'bg-blue-600 text-white hover:bg-blue-700' : 'text-text-primary'}
+                            `}
+                        >
+                            {d}
+                        </div>
+                    )
+                })}
             </div>
         </div>
     );
