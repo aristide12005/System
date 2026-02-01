@@ -26,7 +26,7 @@ export function Sidebar() {
       <div className="p-6 flex items-center gap-3">
         <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden">
           {/* Placeholder for avatar */}
-          <img src="/placeholder-user.jpg" alt="User" className="w-full h-full object-cover" />
+          <img src="/user-avatar.png" alt="User" className="w-full h-full object-cover" />
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-sm font-semibold text-text-primary truncate">Justinus Lhaksana</p>
