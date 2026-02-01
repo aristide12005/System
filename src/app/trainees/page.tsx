@@ -1,18 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Filter, Plus, Trash2, Edit2, ChevronLeft, ChevronRight, MoreHorizontal, Calendar, MapPin, User } from "lucide-react";
+import { Search, Filter, Plus, Trash2, Edit2, ChevronLeft, ChevronRight, MoreHorizontal, Calendar, MapPin, User, Mail, Phone } from "lucide-react";
+import React from 'react';
 
 type Trainee = {
     id: string;
     name: string;
-    position: string;
-    department: string;
     email: string;
     phone: string;
-    status: "Full Time" | "Part Time";
-    avatar: string; // Using placeholder or generic
+    status: "Active" | "Inactive";
+    avatar: string;
     // Expanded details
+    position?: string; // Kept for details view if needed, or remove? User said "on columns keep...", maybe data can stay for expansion?
+    department?: string;
     officeLocation?: string;
     teamMates?: string[];
     birthday?: string;
@@ -28,7 +29,7 @@ const TRAINEES_DATA: Trainee[] = [
         department: "Sales Team",
         email: "alma.lawson@example.com",
         phone: "(252) 555-0126",
-        status: "Full Time",
+        status: "Active",
         avatar: "https://i.pravatar.cc/150?u=1",
     },
     {
@@ -38,7 +39,7 @@ const TRAINEES_DATA: Trainee[] = [
         department: "Finances",
         email: "bill.sanders@example.com",
         phone: "(252) 555-0126",
-        status: "Part Time",
+        status: "Inactive",
         avatar: "https://i.pravatar.cc/150?u=2",
     },
     {
@@ -48,7 +49,7 @@ const TRAINEES_DATA: Trainee[] = [
         department: "Management",
         email: "weaver@example.com",
         phone: "(252) 555-0126",
-        status: "Full Time",
+        status: "Active",
         avatar: "https://i.pravatar.cc/150?u=3",
     },
     {
@@ -58,7 +59,7 @@ const TRAINEES_DATA: Trainee[] = [
         department: "Engineering",
         email: "simmons@example.com",
         phone: "(252) 555-0126",
-        status: "Full Time",
+        status: "Active",
         avatar: "https://i.pravatar.cc/150?u=4",
     },
     {
@@ -68,7 +69,7 @@ const TRAINEES_DATA: Trainee[] = [
         department: "Sales",
         email: "lawson@example.com",
         phone: "(252) 555-0126",
-        status: "Full Time",
+        status: "Active",
         avatar: "https://i.pravatar.cc/150?u=5",
         officeLocation: "2972 Westheimer Rd. Santa Ana, Illinois 85486",
         teamMates: ["Ronald Richards", "Floyd Miles", "Savannah Nguyen"],
@@ -83,7 +84,7 @@ const TRAINEES_DATA: Trainee[] = [
         department: "Human Resources",
         email: "roberts@example.com",
         phone: "(252) 555-0126",
-        status: "Full Time",
+        status: "Active",
         avatar: "https://i.pravatar.cc/150?u=6",
     },
     {
@@ -93,7 +94,7 @@ const TRAINEES_DATA: Trainee[] = [
         department: "Customer Success",
         email: "tim.jennings@example.com",
         phone: "(252) 555-0126",
-        status: "Part Time",
+        status: "Inactive",
         avatar: "https://i.pravatar.cc/150?u=7",
     },
     {
@@ -103,7 +104,7 @@ const TRAINEES_DATA: Trainee[] = [
         department: "Marketing",
         email: "debra.holt@example.com",
         phone: "(252) 555-0126",
-        status: "Full Time",
+        status: "Active",
         avatar: "https://i.pravatar.cc/150?u=8",
     },
     {
@@ -113,7 +114,7 @@ const TRAINEES_DATA: Trainee[] = [
         department: "Product",
         email: "felicia.reid@example.com",
         phone: "(252) 555-0126",
-        status: "Part Time",
+        status: "Inactive",
         avatar: "https://i.pravatar.cc/150?u=9",
     },
 ];
@@ -188,11 +189,9 @@ export default function TraineesPage() {
                                 <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
                             </th>
                             <th className="p-4">Name</th>
-                            <th className="p-4">Position</th>
-                            <th className="p-4">Department</th>
+                            <th className="p-4">Status</th>
                             <th className="p-4">Email</th>
                             <th className="p-4">Phone</th>
-                            <th className="p-4">Status</th>
                             <th className="p-4 text-center">Edit</th>
                         </tr>
                     </thead>
@@ -225,18 +224,16 @@ export default function TraineesPage() {
                                             )}
                                         </div>
                                     </td>
-                                    <td className="p-4 text-gray-600">{trainee.position}</td>
-                                    <td className="p-4 text-gray-600">{trainee.department}</td>
-                                    <td className="p-4 text-gray-600">{trainee.email}</td>
-                                    <td className="p-4 text-gray-600">{trainee.phone}</td>
                                     <td className="p-4">
-                                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${trainee.status === 'Full Time'
+                                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${trainee.status === 'Active'
                                                 ? 'bg-emerald-100 text-emerald-600'
-                                                : 'bg-amber-100 text-amber-600'
+                                                : 'bg-gray-100 text-gray-500'
                                             }`}>
                                             {trainee.status}
                                         </span>
                                     </td>
+                                    <td className="p-4 text-gray-600">{trainee.email}</td>
+                                    <td className="p-4 text-gray-600">{trainee.phone}</td>
                                     <td className="p-4">
                                         <div className="flex items-center justify-center gap-2">
                                             <button className="p-1.5 hover:bg-gray-100 rounded text-gray-400 hover:text-blue-600">
@@ -250,13 +247,15 @@ export default function TraineesPage() {
                                 </tr>
                                 {expandedRow === trainee.id && (
                                     <tr className="bg-white border-b-2 border-blue-500">
-                                        <td colSpan={8} className="p-0">
+                                        <td colSpan={6} className="p-0">
                                             <div className="p-6 grid grid-cols-4 gap-8 text-xs text-gray-500 bg-white">
                                                 <div>
                                                     <p className="font-semibold text-gray-900 mb-1 flex items-center gap-2">
                                                         <MapPin className="w-3 h-3 text-gray-400" /> Office Location
                                                     </p>
                                                     <p>{trainee.officeLocation || "N/A"}</p>
+                                                    <p className="font-semibold text-gray-900 mt-4 mb-1">Position</p>
+                                                    <p>{trainee.position || "N/A"}</p>
                                                 </div>
                                                 <div>
                                                     <p className="font-semibold text-gray-900 mb-1 flex items-center gap-2">
@@ -283,6 +282,8 @@ export default function TraineesPage() {
                                                 <div>
                                                     <p className="font-semibold text-gray-900 mb-1">Address</p>
                                                     <p>{trainee.address || "N/A"}</p>
+                                                    <p className="font-semibold text-gray-900 mt-4 mb-1">Department</p>
+                                                    <p>{trainee.department || "N/A"}</p>
                                                 </div>
                                             </div>
                                         </td>
@@ -314,4 +315,3 @@ export default function TraineesPage() {
         </div>
     );
 }
-import React from 'react';
