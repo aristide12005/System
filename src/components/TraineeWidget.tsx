@@ -1,15 +1,28 @@
-import { ThumbsUp } from "lucide-react";
-
 export function TraineeWidget() {
     return (
         <div className="bg-white p-6 rounded-2xl shadow-sm flex flex-col justify-between w-64 h-40">
             <div className="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center mb-4">
-                <ThumbsUp className="w-5 h-5 text-orange-500" />
+                <Groups3Icon className="w-5 h-5 text-orange-500" />
             </div>
             <div>
                 <p className="text-sm text-text-secondary mb-1">Total Trainee</p>
                 <h3 className="text-2xl font-bold text-text-primary">30,000</h3>
             </div>
         </div>
+    );
+}
+
+function Groups3Icon({ className }: { className?: string }) {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24px"
+            viewBox="0 -960 960 960"
+            width="24px"
+            fill="currentColor"
+            className={className}
+        >
+            <path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-240v-32q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v32q0 33-23.5 56.5T720-160H240q-33 0-56.5-23.5T160-240Zm80 0h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z" />
+        </svg>
     );
 }
