@@ -31,7 +31,7 @@ export function DashboardHeader() {
     }, []);
 
     return (
-        <div className="flex items-start justify-between mb-8">
+        <div className="flex items-start justify-between mb-8 border-b border-gray-200 pb-8">
             <div className="flex items-center gap-4">
                 <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
                     <ChevronLeft className="w-5 h-5 text-gray-400" />
