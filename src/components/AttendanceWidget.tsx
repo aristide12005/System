@@ -1,50 +1,45 @@
 export function AttendanceWidget() {
     return (
-        <div className="bg-white p-6 rounded-xl shadow-sm flex flex-col justify-between h-40 w-full">
+        <div className="bg-white p-4 rounded-xl shadow-sm flex flex-col justify-between h-32 w-full">
             <div className="flex justify-between items-center mb-1">
-                <h3 className="font-bold text-text-primary text-lg">Attendance</h3>
-                <div className="p-1.5 bg-gray-50 rounded-lg text-gray-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <h3 className="font-bold text-text-primary text-sm">Attendance</h3>
+                <div className="p-1 bg-gray-50 rounded text-gray-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
                     </svg>
                 </div>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-3">
                 {/* Last Class */}
                 <div>
-                    <div className="flex justify-between text-xs mb-1.5">
-                        <span className="text-gray-400">Last class date</span>
-                        <span className="text-text-primary font-medium">Saturday, Jan 31</span>
+                    <div className="flex justify-between items-center text-[10px] sm:text-xs mb-1">
+                        <span className="text-gray-400">Last class date : Saturday, Jan 31</span>
                     </div>
-                    <div className="flex items-center gap-1 h-2">
+                    <div className="flex items-center gap-1 h-1.5 rounded-full overflow-hidden">
                         {/* Present Stick */}
-                        <div className="h-full bg-emerald-500 rounded-full w-[75%]"></div>
+                        <div className="h-full bg-emerald-500 w-[75%]"></div>
                         {/* Absent Stick */}
-                        <div className="h-full bg-red-400 rounded-full w-[25%]"></div>
-                    </div>
-                    <div className="flex justify-between text-[10px] mt-1 text-gray-400">
-                        <span>Present</span>
-                        <span>Absent</span>
+                        <div className="h-full bg-red-400 w-[25%]"></div>
                     </div>
                 </div>
 
                 {/* Today */}
                 <div>
-                    <div className="flex justify-between text-xs mb-1.5">
-                        <span className="text-gray-400">Today date</span>
-                        <span className="text-text-primary font-medium">Sunday 1, February</span>
+                    <div className="flex justify-between items-center text-[10px] sm:text-xs mb-1">
+                        <span className="text-gray-400">Today date : Sunday 1, February</span>
                     </div>
-                    <div className="flex items-center gap-1 h-2">
+                    <div className="flex items-center gap-1 h-1.5 rounded-full overflow-hidden">
                         {/* Present Stick */}
-                        <div className="h-full bg-emerald-500 rounded-full w-[85%]"></div>
+                        <div className="h-full bg-emerald-500 w-[85%]"></div>
                         {/* Absent Stick */}
-                        <div className="h-full bg-red-400 rounded-full w-[15%]"></div>
+                        <div className="h-full bg-red-400 w-[15%]"></div>
                     </div>
-                    <div className="flex justify-between text-[10px] mt-1 text-gray-400">
-                        <span>Present</span>
-                        <span>Absent</span>
-                    </div>
+                </div>
+
+                <div className="flex justify-start gap-4 text-[9px] text-gray-400">
+                    <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div> Present</span>
+                    <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-red-400"></div> Absent</span>
                 </div>
             </div>
         </div>
