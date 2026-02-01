@@ -1,5 +1,6 @@
 import { DashboardHeader } from "@/components/DashboardHeader";
 import { TraineeWidget } from "@/components/TraineeWidget";
+import { AttendanceWidget } from "@/components/AttendanceWidget";
 
 export default function Home() {
   return (
@@ -10,6 +11,9 @@ export default function Home() {
       {/* Content Area */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <TraineeWidget />
+        <div className="lg:col-span-2">
+          <AttendanceWidget />
+        </div>
       </div>
     </div>
   );
