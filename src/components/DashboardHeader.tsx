@@ -35,8 +35,8 @@ export function DashboardHeader() {
                 <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
                     <ChevronLeft className="w-5 h-5 text-gray-400" />
                 </button>
-                <div className="w-12 h-12 rounded-full bg-red-500 flex items-center justify-center text-white text-xl font-bold">
-                    A
+                <div className="w-16 h-16 rounded-xl overflow-hidden flex items-center justify-center bg-white border border-gray-100">
+                    <img src="/financial-plan-banner.png" alt="Financial Plan" className="w-full h-full object-cover" />
                 </div>
                 <div>
                     <h1 className="text-xl font-bold text-text-primary">Financial Mathematics</h1>
