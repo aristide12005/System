@@ -1,4 +1,5 @@
 import { DashboardHeader } from "@/components/DashboardHeader";
+import { TraineeWidget } from "@/components/TraineeWidget";
 
 export default function Home() {
   return (
@@ -6,9 +7,9 @@ export default function Home() {
       {/* Page Header */}
       <DashboardHeader />
 
-      {/* Empty Content Area */}
-      <div className="min-h-[500px] flex items-center justify-center text-gray-400">
-        {/* Intentionally left empty as per request */}
+      {/* Content Area */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <TraineeWidget />
       </div>
     </div>
   );
