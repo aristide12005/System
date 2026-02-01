@@ -2,6 +2,7 @@ import { DashboardHeader } from "@/components/DashboardHeader";
 import { TraineeWidget } from "@/components/TraineeWidget";
 import { AttendanceWidget } from "@/components/AttendanceWidget";
 import { DocumentsWidget } from "@/components/DocumentsWidget";
+import { StudentGradesWidget } from "@/components/StudentGradesWidget";
 
 export default function Home() {
   return (
@@ -16,6 +17,10 @@ export default function Home() {
           <AttendanceWidget />
         </div>
         <DocumentsWidget />
+        {/* Row 2 */}
+        <div className="lg:col-span-4">
+          <StudentGradesWidget />
+        </div>
       </div>
     </div>
   );
