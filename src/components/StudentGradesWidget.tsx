@@ -27,17 +27,25 @@ export function StudentGradesWidget() {
         <div className="bg-white p-4 rounded-xl shadow-sm h-64 w-full">
             <div className="flex justify-between items-center mb-4">
                 <h3 className="font-bold text-text-primary text-sm">Passing Level</h3>
-                <button
-                    onClick={toggleView}
-                    className="p-1 bg-gray-50 rounded text-gray-400 hover:bg-gray-100 hover:text-blue-500 transition-colors"
-                    title="Toggle View (Bar -> Pie -> Curve)"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        {viewMode === 'bar' && <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />}
-                        {viewMode === 'pie' && <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />}
-                        {viewMode === 'area' && <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />}
-                    </svg>
-                </button>
+                <div className="flex gap-2">
+                    <button
+                        onClick={toggleView}
+                        className="p-1 bg-gray-50 rounded text-gray-400 hover:bg-gray-100 hover:text-blue-500 transition-colors"
+                        title="Toggle View (Bar -> Pie -> Curve)"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            {viewMode === 'bar' && <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />}
+                            {viewMode === 'pie' && <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />}
+                            {viewMode === 'area' && <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />}
+                        </svg>
+                    </button>
+                    <button
+                        className="p-1 bg-gray-50 rounded text-gray-400 hover:bg-gray-100 hover:text-blue-500 transition-colors"
+                        title="Open Full"
+                    >
+                        <OpenInFullIcon className="h-4 w-4" />
+                    </button>
+                </div>
             </div>
             <div className="h-[200px] w-full text-xs">
                 <ResponsiveContainer width="100%" height="100%">
@@ -92,5 +100,13 @@ export function StudentGradesWidget() {
                 </ResponsiveContainer>
             </div>
         </div>
+    );
+}
+
+function OpenInFullIcon({ className }: { className?: string }) {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor" className={className}>
+            <path d="M120-120v-200h80v120h120v80H120Zm520 0v-80h120v-120h80v200H640ZM120-640v-200h200v80h-120v120h-80Zm640 0v-120H640v-80h200v200h-80Z" />
+        </svg>
     );
 }
