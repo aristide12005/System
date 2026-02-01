@@ -39,8 +39,8 @@ export function DashboardHeader() {
                     A
                 </div>
                 <div>
-                    <h1 className="text-xl font-bold text-text-primary">Blue Chips Chicago</h1>
-                    <p className="text-sm text-text-secondary">Diam nullam quis nunc et pretium augue.</p>
+                    <h1 className="text-xl font-bold text-text-primary">Financial Mathematics</h1>
+                    <p className="text-sm text-text-secondary">Analyzin accounts and thier situations</p>
                 </div>
             </div>
 
